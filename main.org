@@ -1,0 +1,57 @@
+* Algorithms in different Lisps
+
+** Inserstion sort
+
+#+BEGIN_SRC clojure
+(defn insert [xs x]
+  (cond
+    (empty? xs) (list x)
+    (< x (first xs)) (conj xs x)
+    :else (conj (insert (rest xs) x) (first xs))))
+
+(defn insertion-sort [sorted xs]
+  (if
+      (empty? xs) sorted
+      (insertion-sort (insert sorted (first xs)) (rest xs))))
+
+(insertion-sort [] [1 5 2 3])
+#+END_SRC
+
+
+
+** Merge sort
+
+#+BEGIN_SRC clojure
+(defn first<=? [xs ys]
+  (<= (first xs) (first ys)))
+
+
+(defn merge-it [left right]
+  (cond
+    (empty? left) right
+    (empty? right) left
+    (first<=? left right) (cons (first left) (merge (rest left) right))
+    :else (cons (first right) (merge left (rest right)))))
+
+(defn split [xs]
+  (split-at (/ (count xs) 2) xs))
+
+(defn merge-sort [[x & *xs :as xs]]
+  (if (empty? *xs) xs
+      (let [[left right] (split xs)]
+        (merge-it (merge-sort left) (merge-sort right)))))
+
+(merge-sort (list 7 6 1 2 3 5))
+#+END_SRC
+
+** Misc
+
+#+BEGIN_SRC emacs-lisp
+  (message "Yeah!")
+#+END_SRC
+
+#+begin_src lisp
+  (princ message)
+#+end_src
+
+
